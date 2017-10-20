@@ -7,6 +7,6 @@
 <title>공조 || 문제유형 생성</title>
 </head>
 <body>
-
+<h1></h1>
 </body>
 </html>
