@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+   <typeAliases>
+        <package name="icia.project.bean"/>
+   </typeAliases>
+   <typeHandlers>
+      <typeHandler javaType="java.util.Date" 
+      handler="org.apache.ibatis.type.DateTypeHandler"/>
+   </typeHandlers>
+   <mappers>
+      <mapper resource="/icia/project/dao/mapper.xml" />
+   </mappers>
+</configuration>

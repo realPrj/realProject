@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>realProject</display-name>
+   
+  <!-- context :  환경설정 파일, param : 매개변수 (외부로부터 전달 받는 값) --> 
+   
+  <!-- <context-param>  
+      : Web Application 영역의 환경설정  
+      : Spring MVC Project Template의 경우 /WEB-INF/spring/root-context 
+  --> 
+  <context-param> 
+   <param-name>contextConfigLocation</param-name> <!-- 무조건 contextConfigLocation 써야함 --> 
+   <param-value>/WEB-INF/spring/root-context.xml</param-value> <!-- 경로 --> 
+  </context-param> 
+   
+  <!-- <listener> : 스프링의 환경 설정 정보 파일을 읽어들인다. --> 
+   
+  <listener> 
+   <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> 
+  </listener> 
+   
+  <!-- <servlet> : 클라이언트의 요청을 처리할 Servlet을 지정한다.  
+      <servlet-ㅡmapping> : Servlet이 처리할 요청값에 대한 정의 
+  --> 
+   
+  <servlet> 
+   <servlet-name>HomeController</servlet-name> <!-- 필수 요소 --> 
+   <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> <!-- 필수 요소 --> 
+   <init-param> <!-- 필수 요소 --> 
+   <param-name>contextConfigLocation</param-name> <!-- 변수는 똑같아야 한다. --> 
+   <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value> 
+   </init-param>  
+   <load-on-startup>1</load-on-startup> <!-- 서블릿이 여러개 있을 때 메모리 올릴 순서(실행 순서) --> 
+  </servlet> 
+  <servlet-mapping> 
+   <servlet-name>HomeController</servlet-name> 
+   <url-pattern>/</url-pattern> 
+  </servlet-mapping> 
+   
+  <!-- welcom file list --> 
+  <!-- filter : servlet에 요청하기 전에 특정한 업무  처리 : Encoding --> 
+  <!-- Error Page Definition --> 
+  <!-- session 유지 시간 지정 --> 
+  
+  <!-- 끝 --> 
+   
+<!-- 특정 이름이 아닌 / 전체 모든걸 서블릿으로 가기 때문에 의미가 없어진다. --> 
+<!--   <welcome-file-list> 
+    <welcome-file>index.html</welcome-file> 
+    <welcome-file>index.htm</welcome-file> 
+    <welcome-file>index.jsp</welcome-file> 
+    <welcome-file>default.html</welcome-file> 
+    <welcome-file>default.htm</welcome-file> 
+    <welcome-file>default.jsp</welcome-file> 
+  </welcome-file-list> --> 
+</web-app>

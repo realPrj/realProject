@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="icia.project.dao.IMybatis">
+
+	<!-- 선생님 아이디 체크 -->
+	<select id="tcIdCheck" resultType="Integer" parameterType="member">
+		SELECT COUNT(*)
+		FROM TEACHER
+		WHERE TC_ID=#{id}
+	</select>
+
+	<!-- 학생 아이디 체크 -->
+	<select id="stIdCheck" resultType="Integer" parameterType="member">
+		SELECT COUNT(*)
+		FROM STUDENT
+		WHERE ST_ID=#{id}
+	</select>
+
+	<!-- 학생코드 체크 -->
+	<select id="stCodeCheck" resultType="Integer" parameterType="member">
+		SELECT COUNT(*)
+		FROM STUDENT
+		WHERE ST_RFSTUDENTCODE=#{studentCode} AND ST_STATECODE=#{stateCode}
+	</select>
+
+	<!-- 선생님 임시비밀번호 추출 -->
+	<select id="tcPwdGet" resultType="member" parameterType="member">
+		SELECT
+		TC_PWD AS pwd
+		FROM TEACHER
+		WHERE TC_ID=#{id}
+	</select>
+
+	<!-- 학생 임시비밀번호 추출 -->
+	<select id="stPwdGet" resultType="member" parameterType="member">
+		SELECT
+		ST_PWD AS pwd
+		FROM STUDENT
+		WHERE ST_ID=#{id}
+	</select>
+
+	<!-- 학생코드 추출 -->
+	<select id="stCodeGet" resultType="member" parameterType="member">
+		SELECT
+		ST_RFSTUDENTCODE AS studentCode
+		FROM STUDENT
+		WHERE ST_ID=#{id}
+	</select>
+
+	<!-- 선생님 로그인 히스토리 -->
+	<insert id="tcLogHistory" parameterType="member">
+		INSERT INTO
+		TEACHERLOGOUTHISTORY(TLOH_TCID,TLOH_DATE,TLOH_TYPE)
+		VALUES(#{id},DEFAULT,#{logType})
+	</insert>
+
+	<!-- 학생 로그인 히스토리 -->
+	<insert id="stLogHistory" parameterType="member">
+		INSERT INTO
+		STUDENTLOGOUTHISTORY(SLOH_STRFSTUDENTCODE,SLOH_DATE,SLOH_TYPE)
+		VALUES(#{studentCode},DEFAULT,#{logType})
+	</insert>
+
+	<!-- 선생님 로그아웃 히스토리 -->
+	<insert id="tcLogout" parameterType="member">
+		INSERT INTO
+		TEACHER(TLOH_TCID,TLOH_DATE,TLOH_TYPE)
+		VALUES(#{id},DEFAULT,#{logType})
+	</insert>
+
+	<!-- 학생 로그아웃 히스토리 -->
+	<insert id="stLogout" parameterType="member">
+		INSERT INTO
+		STUDENT(SLOH_STRFSTUDENTCODE,SLOH_DATE,SLOH_TYPE)
+		VALUES(#{studentCode},DEFAULT,#{logType})
+	</insert>
+
+	<!-- 선생님 회원가입 -->
+	<insert id="tcJoin" parameterType="member">
+		INSERT INTO
+		TEACHER(TC_ID,TC_PWD,TC_NAME,TC_EMAIL,TC_PHON)
+		VALUES(#{id},#{pwd},#{name},#{email},#{phone})
+	</insert>
+
+	<!-- 학생 회원가입 -->
+	<insert id="stJoin" parameterType="member">
+		INSERT INTO
+		STUDENT(ST_RFSTUDENTCODE,ST_ID,ST_PWD,ST_NAME,ST_EMAIL,ST_PHONE,ST_STATECODE)
+		VALUES(#{studentCode},#{id},#{pwd},#{name},#{email},#{phone},#{stateCode})
+	</insert>
+
+	<!-- 선생님 아이디 찾기 -->
+	<select id="tcIdFind" resultType="member" parameterType="member">
+		SELECT
+		TC_ID AS id
+		FROM TEACHER
+		WHERE TC_EMAIL=#{email}
+	</select>
+
+	<!-- 학생 아이디 찾기 -->
+	<select id="stIdFind" resultType="member" parameterType="member">
+		SELECT
+		ST_ID AS id
+		FROM STUDENT
+		WHERE ST_EMAIL=#{email}
+	</select>
+
+	<!-- 선생님 나의정보 수정 -->
+	<update id="tcInformationChange" parameterType="member">
+		UPDATE TEACHER
+		SET
+		TC_PWD=#{pwd},TC_NAME=#{name},TC_EMAIL=#{email},TC_PHONE=#{phone}
+		WHERE TC_ID=#{id}
+	</update>
+
+	<!-- 학생 나의정보 수정 -->
+	<update id="stInformationChange" parameterType="member">
+		UPDATE STUDENT
+		SET
+		ST_PWD=#{pwd},ST_NAME=#{name},ST_EMAIL=#{email},ST_PHONE=#{phone}
+		WHERE ST_RFSTUDENTCODE=#{studentCode}
+	</update>
+
+	<!-- 선생님 회원탈퇴 -->
+	<delete id="tcmemberDelete" parameterType="member">
+		DELETE
+		FROM TEACHER
+		WHERE TC_ID=#{id}
+	</delete>
+
+	<!-- 학생 회원탈퇴 -->
+	<delete id="stmemberDelete" parameterType="member">
+		DELETE
+		FROM STUDENT
+		WHERE ST_RFSTUDENTCODE=#{studentCode}
+	</delete>
+
+	<!-- 선생님 학습코드 유무 -->
+	<select id="tclearningCodeCheck" resultType="Integer"
+		parameterType="room">
+		SELECT COUNT(*)
+		FROM LEARNINGROOM
+		WHERE
+		LR_CODE=#{roomCode}
+	</select>
+
+	<!-- 학습방 유무 -->
+	<select id="tclearningRoomCheck" resultType="Integer"
+		parameterType="room">
+		SELECT COUNT(*)
+		FROM LEARNINGROOM
+		WHERE
+		LR_TCID=#{id}
+	</select>
+
+	<!-- 선생님 학습 개설 -->
+	<insert id="tclearningOpen" parameterType="room">
+		INSERT INTO
+		LEARNINGROOM(LR_TCID,LR_CODE,LR_NAME,LR_CONTENT)
+		VALUES(#{id},#{roomCode},#{roomName},#{roomIntroduction})
+	</insert>
+
+	<!-- 학습방 추출 -->
+	<select id="learningGet" resultType="room" parameterType="room">                     
+		SELECT
+		LR_CODE AS roomCode, LR_NAME AS roomName
+		FROM LEARNINGROOM
+		WHERE
+		LR_TCID=#{id}
+	</select>
+
+	<!-- 학생 학습참여 -->
+	<insert id="stLearningJoin" parameterType="room">
+		INSERT INTO
+		LEARNINGSTUDENTREGISTER(LSR_LRCODE,LSR_STRFSTUDENTCODE)
+		VALUES(#{roomCode},#{studentCode})
+	</insert>
+
+
+</mapper>
